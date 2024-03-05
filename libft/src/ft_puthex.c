@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 #include <stdio.h>
 
-static int	ft_toupper(int x)
+int	ft_toupper(int x)
 {
 	if (x >= 'a' && x <= 'z')
 		return (x - 'a' + 'A');

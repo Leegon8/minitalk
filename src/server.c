@@ -14,37 +14,34 @@
 #include <signal.h>
 #include <unistd.h>
 
-void	handle_signal(int signal, siginfo_t *info, void *context)
+void	sig_handler(int signum, siginfo_t *info, void *context)
 {
 	static unsigned char	byte;
-	static int	bit_count;
+	static int		bit_count;
 
-	byte = 0;
-	bit_count = 0;
-	if (signum == SIGUSR1)
-		byte = (byte << 1) | 1;
-	else if (signum == SIGUSR2)
-		byte = byte << 1;
+	(void) context;
+	byte |= (signum == SIGUSR1);
 	bit_count++;
 	if (bit_count == 8)
 	{
 		ft_printf("%c", byte);
-		exit;
 		byte = 0;
 		bit_count = 0;
 	}
+	else
+		byte <<= 1;
 }
 
 int	main(void)
 {
-	struct sigaction	sa;
+	struct sigaction	act;
 
-	sa.sa_sigaction = &handle_signal;
-	sa.sa_flags = SA_SIGINFO;
-	sigemptyset(&sa.sa_mask);
+	act.sa_sigaction = &sig_handler;
+	act.sa_flags = SA_SIGINFO;
+	sigemptyset(&act.sa_mask);
 	ft_printf("%d\n", getpid());
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	sigaction(SIGUSR1, &act, NULL);
+	sigaction(SIGUSR2, &act, NULL);
 	while (1)
 		pause();
 	return (0);

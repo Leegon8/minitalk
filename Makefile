@@ -30,7 +30,7 @@ HEADERS = -I$(H_PATH)
 #_____________VARIABLES____________#
 
 AR = ar rcs
-RM = rm -fr
+RM = rm -rf
 CC = gcc -g
 CCFLAGS = -Wall -Wextra -Werror
 
@@ -49,7 +49,7 @@ $(OBJ_PATH):
 
 #	rule to make exectutables
 $(NAME_SRV): $(OBJ_SRV)
-	$(CC) $(CCFLAGS) $^ -Llibft -lft -o $@
+	$(CC) $(CCFLAGS) $^ -L libft -lft -o $@
 
 $(NAME_CLIENT): $(OBJ_CLIENT)
 	$(CC) $(CCFLAGS) $^ -Llibft -lft -o $@
@@ -67,7 +67,7 @@ clean :
 
 fclean:
 	$(RM) $(NAME_SRV) $(NAME_CLIENT) $(OBJ_PATH)
-	$(MAKE) --silent -C libft fclean
+	#$(MAKE) --silent -C libft fclean
 
 re:
 	make fclean --silent

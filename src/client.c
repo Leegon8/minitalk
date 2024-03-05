@@ -25,10 +25,9 @@ int	check_pid(const char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (ft_isdigit(s[i]) == 1)
-			i++;
-		else if (ft_isdigit(s[i]) == 0)
+		if (!ft_isdigit(s[i]))
 			return (0);
+		i++;
 	}
 	return (1);
 }
@@ -44,29 +43,27 @@ void	send_signal(int pid, unsigned char character)
 
 	i = 8;
 	temp_char = character;
-	while (i > 0)
+	while (i-- > 0)
 	{
-		i--;
 		temp_char = character >> i;
 		if (temp_char % 2 == 0)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(42);
+		usleep(100);
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	pid_t		server_pid;
+	int		server_pid;
 	const char	*message;
-	int			pid;
 	int			i;
 
 	if (argc == 3)
 	{
 		if (check_pid(argv[1]) != 1)
-			ft_printf("Error from PID");
+			ft_printf("Error from PID\n");
 		else if (check_pid(argv[1]) == 1)
 		{
 			server_pid = ft_atoi(argv[1]);
@@ -74,13 +71,14 @@ int	main(int argc, char **argv)
 			i = 0;
 			while (message[i])
 				send_signal(server_pid, message[i++]);
-			send_signal(server_pid, '\0');
+			send_signal(server_pid, '\n');
 		}
+		ft_printf("Se han escrito %d caracteres\n", i);
 	}
 	else
 	{
 		ft_printf("Usage: %s <pid> <message>\n", argv[0]);
-		exit(0);
+		exit(1);
 	}
 	return (0);
 }

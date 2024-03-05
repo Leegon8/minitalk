@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 #include <stdio.h>
 
 static int	ft_args(const char *ptr, va_list args)
