@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lauriago <lauriago@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -29,7 +29,11 @@ void	sig_handler(int signum, siginfo_t *info, void *context)
 		bit_count = 0;
 	}
 	else
-		byte <<= 1;	
+		byte <<= 1;
+/*	if (signum == SIGUSR1)
+		kill(info->si_pid, SIGUSR1);
+	else if (signum == SIGUSR2)
+		kill(info->si_pid, SIGUSR2);*/
 }
 
 int	main(void)
@@ -37,7 +41,7 @@ int	main(void)
 	struct sigaction	act;
 
 	act.sa_sigaction = &sig_handler;
-	act.sa_flags = SA_SIGINFO;
+	act.sa_flags = SA_RESTART;
 	sigemptyset(&act.sa_mask);
 	ft_printf("%d\n", getpid());
 	sigaction(SIGUSR1, &act, NULL);
@@ -46,34 +50,3 @@ int	main(void)
 		pause();
 	return (0);
 }
-
-/*
-void	handle_signal(int signum)
-{
-	static unsigned char	byte;
-	static int	bit_count;
-
-	byte = 0;
-	bit_count = 0;
-	if (signum == SIGUSR1)
-		byte = (byte << 1) | 1;
-	else if (signum == SIGUSR2)
-		byte = byte << 1;
-	bit_count++;
-	if (bit_count == 8)
-	{
-		ft_printf("%c", byte);
-		byte = 0;
-		bit_count = 0;
-	}
-}
-
-int	main(void)
-{
-	ft_printf("%d\n", getpid());
-	signal(SIGUSR1, handle_signal);
-	signal(SIGUSR2, handle_signal);
-	while (1)
-		pause();
-	return (0);
-}*/

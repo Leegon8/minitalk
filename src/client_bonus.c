@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lauriago <lauriago@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../inc/minitalk.h"
+
+int	g_received;
 
 // iterates the string from argv[1] and verify that the PID is correct
 // if the string contains all number is correct.
@@ -48,7 +50,14 @@ void	send_signal(int pid, unsigned char character)
 		else
 			kill(pid, SIGUSR1);
 		usleep(100);
+		g_received++;
 	}
+}
+
+void	sig_confirm(int i)
+{
+	ft_printf("You're message have been successfully send\n");
+	ft_printf("%d bites have been successfully recived\n", g_received);
 }
 
 int	main(int argc, char **argv)
@@ -56,7 +65,9 @@ int	main(int argc, char **argv)
 	int		server_pid;
 	const char	*message;
 	int			i;
+	
 
+	i = 0;
 	if (argc == 3)
 	{
 		if (check_pid(argv[1]) != 1)
@@ -65,12 +76,11 @@ int	main(int argc, char **argv)
 		{
 			server_pid = ft_atoi(argv[1]);
 			message = argv[2];
-			i = 0;
 			while (message[i])
 				send_signal(server_pid, message[i++]);
 			send_signal(server_pid, '\n');
 		}
-		//ft_printf("Se han escrito %d caracteres\n", i);
+	sig_confirm(i);
 	}
 	else
 	{

@@ -13,7 +13,6 @@
 #NAME & HEADER#
 
 NAME = libft.a
-HEADER = libft.h
 
 SRCS =  ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 		ft_isascii.c ft_isdigit.c ft_isprint.c ft_memchr.c ft_memcmp.c \
@@ -56,14 +55,14 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c Makefile $(H_PATH)
 
 #CLEAN#
 clean: 
-	$(RM) $(OBJ_PATH)
+	$(RM) -rd $(OBJ_PATH)
 
 fclean: clean
 	$(RM) $(NAME) $(OBJ_PATH)
 
 #RE-MAKE#
 re: 
-	$(RM) $(NAME) $(OBJS)
+	$(RM) $(NAME) $(OBJ_PATH)
 	make all --silent
 
 .PHONY: all clean fclean re
